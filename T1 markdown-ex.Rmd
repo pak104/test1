@@ -1,0 +1,186 @@
+---
+title: "226308 Data Literacy"
+author: "Swaran Sandhu"
+subtitle: 'Markdown'
+output:
+  html_document:
+    df_print: paged
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+# Übung: Markdown Dokument erstellen
+
+## Setup Dateien
+
+```{r setup document, include=FALSE, fig.width = 9, fig.height = 6}
+
+# Setup für knitr (ggf. vorher installieren)
+knitr::opts_chunk$set(echo = TRUE)
+
+# Programmbibliotheken laden bzw. installieren
+library(tidyverse)
+```
+
+## Formatierungen
+
+## Grundregeln Markdown
+
+Wir verwenden die Auszeichnungssprache RMarkdown, die in RStudio 1.4 als
+Visual Markdown implementiert wurde. Mit [Visual
+Markdown](https://rstudio.github.io/visual-markdown-editing/) lassen
+sich ganz einfach zwischen dem Markdown-Code und der Repräsentation hin
+und her wechseln. Der Befehl dazu ist ganz rechts als Icon in der
+Menüleiste abgelegt. Eine gute Übersicht ist unter
+<http://rmarkdown.rstudio.com> abgelegt, [Cheatsheet
+Markdown](https://raw.githubusercontent.com/rstudio/cheatsheets/main/rmarkdown.pdf).
+
+#### YAML
+
+Als YAML wird der [Header (Kopf) eines
+Markdown-Dokuments](https://bookdown.org/yihui/rmarkdown/html-document.html)
+bezeichnet, in dem die Formatierung und Ausgabe des Dokuments festgelegt
+werden. Die meisten YAML-Konfigurationen sind bereits angelegt und
+definieren den Autor und Titel des Dokuments. YAML wird dann relevant,
+wenn mit dem Paket [knitr](https://yihui.org/knitr/) das
+Markdown-Dokument in weitere Formate wie HTML, Word oder PDF exportiert
+wird.
+
+**Code, Layout und Inhalt**
+
+Ein Grundprinzip von Markdown ist es, Inhalt, Layout und Code
+voneinander zu trennen. Das bedeutet, dass der gesamte Inhalt als
+einfacher Text zu lesen ist, egal von welchen Endgerät (im Gegensatz
+etwa zu Textverarbeitungen wie MS Word oder Layout-Programmen). Damit
+ist sichergestellt, dass sich die Inhalte weiterverwenden lassen.
+
+Die **Auszeichnungsformate** für die Formatierung wie etwa Überschriften
+oder Fettungen werden automatisch ausgelesen und entsprechend umgesetzt.
+Teilweise lassen sich auch visuelle Editoren verwenden (z.B. Visual
+Markdown Editor in RStudio). Diese "übersetzen" die Auszeichungen in
+Echtzeit in die Darstellung und lassen so ein ähnliches Arbeiten wie in
+Word.
+
+```{r Markdown Auszeichungen, echo=FALSE, fig.height=6, fig.width=9}
+
+# Überschriften
+
+# Hauptüberschrift 1
+## Kapitelüberschrift 1.1 
+### Teilkapitel 1.1.1 
+
+# Auszeichnungen
+# *fett*
+# **kursiv**
+
+```
+
+**Code-Chunks**
+
+Code Chunks sind konfigurierbare und ausführbare "Code-Schnipsel". Damit
+lässt sich Programmcode direkt in einem Dokument ausführen. Das hat
+mehrere Vorteile.
+
+1.  Der Wechsel zwischen Programmierumgebung und Dokument/Erläuterung
+    entfällt.
+2.  Der Datenbestand im Dokument ist immer aktuell.
+3.  Veränderungen in den Daten werden auf das gesamte Dokument
+    übertragen.
+4.  Variablen bzw. deren Ergebnisse lassen sich direkt im Text
+    einbetten.
+5.  Das Dokument ist für Dritte reproduzierbar, sofern die Datenquelle
+    in einem Online-Verzeichnis liegt und daher leicht austauschbar.
+
+Jeder Code-Chunk benötigt a) einen eindeutigen Namen (keine
+Sonderzeichen) und b) kann [individuell
+eingestellt](https://yihui.org/knitr/options/) werden:
+
+-   echo = FALSE: es wird kein Code ausgegeben, nur das Ergebnis
+    angezeigt
+-   message = TRUE: zeigt alle Meldungen an, FALSE verhindert das.
+-   paged.print=TRUE: liefert den Output auf mehreren Seiten
+-   fig.height=6, fig.width=9: Höhe und Breite der Visualisierung in
+    inch.
+
+**Grafiken einbetten**
+
+Häufig visualisieren wir Daten. Diese lassen sich als Output direkt in
+einem Code-Chunk generieren. Wenn nur eine Abbildung gezeigt werden soll
+ist es hilfreich, den Codechunk auf Echo=FALSE zu stellen, damit nur die
+Abbildung im Text angezeigt wird.
+
+**Grundrechenarten**
+
+```{r Grundrechenarten}
+
+# Addition
+1+2
+
+# Substraktion
+15-3
+
+# Multiplikation
+2*3
+
+# Division
+64/8
+
+# Verknüpfung einzelner Befehle (Klammerregeln beachten)
+(2+4) * (2) / 3
+```
+
+### Zuweisungen und Variablen
+
+Prinzipiell können Variablen nicht nur eine natürliche Zahl, sondern
+auch Text oder anderen Datentypen umfassen. Allerdings lassen sich
+unterschiedliche Datentypen nicht miteinander verarbeiten, z.B. lässt
+sich eine Zahl nicht durch einen Text teilen.
+
+**Objekte** lassen sich durch den Zuweisungsbefehl \<- erstellen. Das
+bedeutet, dass einem Objekt ein bestimmter Wert zugeordnet wird. Das
+können natürliche Zahlen oder Texte sein. Objekte wiederum lassen sich
+direkt aufrufen oder weiter mit Funktionen verarbeiten. Funktionen
+funktionieren wie Verben, die einem Objekt sagen, was sie tun sollen.
+
+**Verweise im Text**
+
+Sind Objekte im Code definiert, lassen sich diese im Text direkt
+referenzieren.
+
+```{r Beispiel Markdown Referenzierung im Text}
+
+# Wir erstellen ein Objekt mit der Bezeichnung age_anton, das in diesem Beispiel berechnet wird
+
+anton <- 2001 # Geburtsjahr von Anton
+age_anton <- 2021-anton # Alter von Anton 
+age_anton
+plus <- 25
+age_anton_plus <- age_anton + plus
+age_anton_plus
+
+# Das Objekt age_anton lässt sich nun durch `r age_anton` direkt im Markdown-Text einbetten. Wichtig dafür sind die entsprechenden Zeichen, die "backticks" heißen. Wenn das Dokument entsprechend umgewandelt wird, z.B. als HTML, dann werden auch die Variablenwerte im Text entsprechend verändert.
+```
+
+Anton ist `r age_anton` Jahr alt.\
+Anton wird in `r plus` Jahren `r age_anton_plus` Jahre alt sein.
+
+Die Werte werden erst ersetzt, wenn das Dokument durch knitr in einem
+anderen Format wie etwa HTML ausgegeben werden.
+
+# Aufgaben
+
+## Erstellen Sie einen kleinen Markdown Text
+
+# 
+
+## Objekte und Zuweisungen
+
+Übersetzen Sie folgende Geschichte mit Zuweisungen in einen R Code:
+
+1)  Welpe Wuff ist 3 Monat alt. Sein großer Bruder Waff ist 9 Monate
+    alt. Wie alt sind Wuff und Waff zusammen?
+
+```{r Uebung 1 Wuff und Waff}
+
+```
